@@ -116,3 +116,11 @@ To configure initial tabs:
 ### Collaborator Tabs
 
 When enabled, this option allows collaborators to save their personal tab state to browser local storage. Their tab configuration will be restored after page refresh, providing a personalized experience while still respecting the initial tabs set by admins.
+
+
+# 🚨 Browser Compatibility Note
+A core feature of this application relies on the modern window.navigation API.
+
+✅ Supported Browsers: Chrome 102+, Edge 102+, Safari 16.4+, Opera 88+.
+
+⚠️ Important: Firefox does NOT support this API by default. Using Firefox may cause navigation or routing features to malfunction. For the best experience during development and production, we recommend using Chrome, Edge, or Safari (16.4+).
