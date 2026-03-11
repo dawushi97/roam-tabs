@@ -15,6 +15,7 @@ import {
   createOrReuseTab,
   ensureMainWindowMatchesTab,
   findExactTabForSnapshot,
+  focusTab as focusTabFromConfig,
   isAutoOpenNewTab,
   isStackMode,
   saveAndRefreshTabs,
@@ -217,6 +218,9 @@ function App(props: { tabs: Tab[]; currentTab?: Tab }) {
       saveAndRefreshTabs(tabs, undefined);
       return;
     }
+    if (routeMeta?.fromTabSwitch) {
+      return;
+    }
     const pageUid = getPageUidByUid(uid);
     if (routeMeta?.ensureMainWindow && currentTab) {
       const restoredTab = restoreTabFromHistory(currentTab, pageUid);
@@ -375,7 +379,7 @@ class AppTab extends Component<{
             return;
           }
           console.log("onClick: ", tab);
-          openUid(tab.blockUid);
+          focusTabFromConfig(tab.tabId);
         }}
         rightIcon={
           tab.pin ? (
@@ -423,15 +427,6 @@ class AppTab extends Component<{
   }
 }
 // Moved to src/hooks/useEvent.ts
-
-const openUid = (uid: string) => {
-  console.log("openUid: ", uid);
-  window.roamAlphaAPI.ui.mainWindow.openBlock({
-    block: {
-      uid: uid,
-    },
-  });
-};
 
 let ctrlKeyPressed = false;
 

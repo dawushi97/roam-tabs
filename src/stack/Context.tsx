@@ -319,6 +319,9 @@ export const StackApp = (props: {
       saveAndRefreshTabs(props.tabs, undefined);
       return;
     }
+    if (routeMeta?.fromTabSwitch) {
+      return;
+    }
 
     const pageOrBlockUid = uid;
 

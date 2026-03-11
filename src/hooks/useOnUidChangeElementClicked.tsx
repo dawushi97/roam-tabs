@@ -1,12 +1,18 @@
 import { useEffect } from "react";
 import { extension_helper } from "../helper";
 import { takeQueuedSearchNavigation } from "../roamSearchHotkeys";
+import {
+  consumeQueuedRouteIntent,
+  expireQueuedRouteIntentSoon,
+} from "../routeIntent";
 import { useEvent } from "./useEvent";
 
 export type RouteSyncMeta = {
   ensureMainWindow?: boolean;
   fromSearchSelection?: boolean;
+  fromTabSwitch?: boolean;
   forceOpenInNewTab?: boolean;
+  targetTabId?: string;
   source:
     | "currententrychange"
     | "hashchange"
@@ -89,12 +95,14 @@ function observeElementClicked() {
     syncRetryCount = 0;
     const searchNavigation = takeQueuedSearchNavigation();
     if (url === lastSyncedUrl) {
+      expireQueuedRouteIntentSoon();
       return;
     }
     lastSyncedUrl = url;
     notifyListeners(getUidFromUrl(url), {
       ...meta,
       ...searchNavigation,
+      ...consumeQueuedRouteIntent(),
     });
   };
 

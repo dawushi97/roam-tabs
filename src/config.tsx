@@ -10,6 +10,7 @@ import {
   renderSwitchCommand,
 } from "./SwitchCommand";
 import { unwatchAllRoamSections, watchAllRoamSections } from "./hooks/useRememberLastEditedBlock";
+import { queueTabSwitchNavigation } from "./routeIntent";
 
 const Keys = {
   Auto: "Auto",
@@ -569,6 +570,7 @@ export function focusTab(tabId: string) {
   const tabs = cacheTab?.tabs || [];
   const tabIndex = tabs.findIndex((tab) => tab.tabId === tabId);
   if (tabIndex > -1) {
+    queueTabSwitchNavigation(tabId);
     saveAndRefreshTabs(tabs, tabs[tabIndex]);
     window.roamAlphaAPI.ui.mainWindow.openBlock({
       block: {
