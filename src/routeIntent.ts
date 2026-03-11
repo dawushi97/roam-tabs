@@ -1,17 +1,18 @@
 type QueuedRouteIntent = {
   fromTabSwitch: boolean;
   targetTabId?: string;
+  targetUid?: string;
 };
 
-let queuedIntent: QueuedRouteIntent = {
+const emptyQueuedRouteIntent = (): QueuedRouteIntent => ({
   fromTabSwitch: false,
-};
+});
+
+let queuedIntent: QueuedRouteIntent = emptyQueuedRouteIntent();
 let queuedResetTimer: ReturnType<typeof setTimeout> | undefined;
 
 function clearQueuedRouteIntent() {
-  queuedIntent = {
-    fromTabSwitch: false,
-  };
+  queuedIntent = emptyQueuedRouteIntent();
   if (queuedResetTimer) {
     clearTimeout(queuedResetTimer);
     queuedResetTimer = undefined;
@@ -31,10 +32,11 @@ function armIntentResetWithDelay(delayMs: number) {
   }, delayMs);
 }
 
-export function queueTabSwitchNavigation(tabId: string) {
+export function queueTabSwitchNavigation(tabId: string, targetUid?: string) {
   queuedIntent = {
     fromTabSwitch: true,
     targetTabId: tabId,
+    targetUid,
   };
   armIntentReset();
 }
@@ -47,7 +49,22 @@ export function peekQueuedRouteIntent(): QueuedRouteIntent {
   return queuedIntent;
 }
 
-export function consumeQueuedRouteIntent(): QueuedRouteIntent {
+export function consumeQueuedRouteIntent(expectedUid?: string): QueuedRouteIntent {
+  if (!queuedIntent.fromTabSwitch) {
+    return emptyQueuedRouteIntent();
+  }
+
+  if (queuedIntent.targetUid) {
+    if (!expectedUid) {
+      return emptyQueuedRouteIntent();
+    }
+
+    if (queuedIntent.targetUid !== expectedUid) {
+      expireQueuedRouteIntentSoon();
+      return emptyQueuedRouteIntent();
+    }
+  }
+
   const intent = queuedIntent;
   clearQueuedRouteIntent();
   return intent;

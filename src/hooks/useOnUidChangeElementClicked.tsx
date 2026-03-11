@@ -13,6 +13,7 @@ export type RouteSyncMeta = {
   fromTabSwitch?: boolean;
   forceOpenInNewTab?: boolean;
   targetTabId?: string;
+  targetUid?: string;
   source:
     | "currententrychange"
     | "hashchange"
@@ -99,10 +100,11 @@ function observeElementClicked() {
       return;
     }
     lastSyncedUrl = url;
-    notifyListeners(getUidFromUrl(url), {
+    const nextUid = getUidFromUrl(url);
+    notifyListeners(nextUid, {
       ...meta,
       ...searchNavigation,
-      ...consumeQueuedRouteIntent(),
+      ...consumeQueuedRouteIntent(nextUid),
     });
   };
 

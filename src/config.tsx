@@ -10,7 +10,7 @@ import {
   renderSwitchCommand,
 } from "./SwitchCommand";
 import { unwatchAllRoamSections, watchAllRoamSections } from "./hooks/useRememberLastEditedBlock";
-import { queueTabSwitchNavigation } from "./routeIntent";
+import { clearQueuedRouteIntentNow, queueTabSwitchNavigation } from "./routeIntent";
 
 const Keys = {
   Auto: "Auto",
@@ -570,13 +570,19 @@ export function focusTab(tabId: string) {
   const tabs = cacheTab?.tabs || [];
   const tabIndex = tabs.findIndex((tab) => tab.tabId === tabId);
   if (tabIndex > -1) {
-    queueTabSwitchNavigation(tabId);
-    saveAndRefreshTabs(tabs, tabs[tabIndex]);
-    window.roamAlphaAPI.ui.mainWindow.openBlock({
-      block: {
-        uid: tabs[tabIndex].blockUid || tabs[tabIndex].uid,
-      },
-    });
+    const targetTab = tabs[tabIndex];
+    const targetUid = getTabNavigationTarget(targetTab);
+    const shouldSyncMainWindow = shouldSyncMainWindowToTarget(targetUid);
+
+    saveAndRefreshTabs(tabs, targetTab);
+
+    if (!shouldSyncMainWindow) {
+      clearQueuedRouteIntentNow();
+      return;
+    }
+
+    queueTabSwitchNavigation(tabId, targetUid);
+    void ensureMainWindowMatchesTab(targetTab, targetUid);
   }
 }
 
@@ -867,6 +873,18 @@ export function navigateActiveTabForward(): Promise<boolean> {
 
 let syncingMainWindowTarget: string | null = null;
 
+function getTabNavigationTarget(tab?: Tab): string | undefined {
+  if (!tab) {
+    return undefined;
+  }
+
+  return (
+    (tab.blockUid && uidExists(tab.blockUid) && tab.blockUid) ||
+    (uidExists(tab.uid) && tab.uid) ||
+    undefined
+  );
+}
+
 function getContainingPageUid(uid?: string): string | undefined {
   if (!uid || !uidExists(uid)) {
     return undefined;
@@ -879,21 +897,13 @@ function getContainingPageUid(uid?: string): string | undefined {
      [?b :block/page ?p]
      [?p :block/uid ?e]
 ]
-`) as unknown as string;
+  `) as unknown as string;
   return pageUid || uid;
 }
 
-export async function ensureMainWindowMatchesTab(tab?: Tab): Promise<void> {
-  if (!tab) {
-    return;
-  }
-
-  const targetUid =
-    (tab.blockUid && uidExists(tab.blockUid) && tab.blockUid) ||
-    (uidExists(tab.uid) && tab.uid) ||
-    undefined;
+function shouldSyncMainWindowToTarget(targetUid?: string): boolean {
   if (!targetUid) {
-    return;
+    return false;
   }
 
   const currentOpenUid = window.roamAlphaAPI.ui.mainWindow.getOpenPageOrBlockUid();
@@ -901,27 +911,38 @@ export async function ensureMainWindowMatchesTab(tab?: Tab): Promise<void> {
   const currentPageUid = getContainingPageUid(currentOpenUid);
 
   if (currentOpenUid === targetUid) {
-    return;
+    return false;
   }
 
   if (targetUid === targetPageUid && currentPageUid === targetPageUid) {
-    return;
+    return false;
   }
 
   if (syncingMainWindowTarget === targetUid) {
+    return false;
+  }
+
+  return true;
+}
+
+export async function ensureMainWindowMatchesTab(
+  tab?: Tab,
+  resolvedTargetUid = getTabNavigationTarget(tab)
+): Promise<void> {
+  if (!shouldSyncMainWindowToTarget(resolvedTargetUid)) {
     return;
   }
 
-  syncingMainWindowTarget = targetUid;
+  syncingMainWindowTarget = resolvedTargetUid;
   try {
     await window.roamAlphaAPI.ui.mainWindow.openBlock({
       block: {
-        uid: targetUid,
+        uid: resolvedTargetUid,
       },
     });
   } finally {
     setTimeout(() => {
-      if (syncingMainWindowTarget === targetUid) {
+      if (syncingMainWindowTarget === resolvedTargetUid) {
         syncingMainWindowTarget = null;
       }
     }, 0);
