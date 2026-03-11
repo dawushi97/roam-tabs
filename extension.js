@@ -1,15 +1,15 @@
 var Vt = Object.defineProperty;
 var jt = (e, n, t) => n in e ? Vt(e, n, { enumerable: !0, configurable: !0, writable: !0, value: t }) : e[n] = t;
 var S = (e, n, t) => (jt(e, typeof n != "symbol" ? n + "" : n, t), t);
-let qe = [];
+let We = [];
 const ne = {
   on_uninstall: (e) => {
-    qe.push(e);
+    We.push(e);
   },
   uninstall() {
-    qe.forEach((e) => {
+    We.forEach((e) => {
       e();
-    }), qe = [];
+    }), We = [];
   }
 };
 function Pt(e) {
@@ -24,7 +24,7 @@ function Pt(e) {
     o.value = t, document.body.appendChild(o), o.select(), document.execCommand("copy"), document.body.removeChild(o);
   }
 }
-const ge = window.React, Qt = window.React.useEffect, He = window.React.useState, Gt = window.React.useCallback, Jt = window.Blueprint.Select.MultiSelect, lt = window.Blueprint.Core.MenuItem;
+const ge = window.React, Qt = window.React.useEffect, qe = window.React.useState, Gt = window.React.useCallback, Jt = window.Blueprint.Select.MultiSelect, lt = window.Blueprint.Core.MenuItem;
 function Zt(e, n) {
   let t;
   return function(...o) {
@@ -35,7 +35,7 @@ function en({
   selected: e,
   onSave: n
 }) {
-  const [t, o] = He(e), [i, r] = He([]), [s, a] = He([]);
+  const [t, o] = qe(e), [i, r] = qe([]), [s, a] = qe([]);
   Qt(() => {
     window.roamAlphaAPI.data.async.fast.q(
       `
@@ -138,21 +138,21 @@ function en({
     }
   ));
 }
-let nt = !1, ot = !1, de;
-function it() {
-  nt = !1, ot = !1, de && (clearTimeout(de), de = void 0);
+let tt = !1, nt = !1, ue;
+function ot() {
+  tt = !1, nt = !1, ue && (clearTimeout(ue), ue = void 0);
 }
 function tn(e = !1) {
-  nt = !0, ot = e, de && clearTimeout(de), de = setTimeout(() => {
-    it();
+  tt = !0, nt = e, ue && clearTimeout(ue), ue = setTimeout(() => {
+    ot();
   }, 1e3);
 }
 function nn() {
   const e = {
-    fromSearchSelection: nt,
-    forceOpenInNewTab: ot
+    fromSearchSelection: tt,
+    forceOpenInNewTab: nt
   };
-  return it(), e;
+  return ot(), e;
 }
 function on(e) {
   return e instanceof HTMLInputElement && (e.id === "find-or-create-input" || e.getAttribute("placeholder") === "Find or Create Page") && !e.closest(".roam-tabs-switch-omnibar");
@@ -203,7 +203,7 @@ function cn() {
     if (tn(o), !o)
       return;
     if (!rn()) {
-      it();
+      ot();
       return;
     }
     n.preventDefault(), n.stopPropagation();
@@ -214,7 +214,7 @@ function cn() {
 }
 cn();
 const ln = window.React.useCallback, dn = window.React.useLayoutEffect, un = window.React.useRef;
-function Qe(e) {
+function je(e) {
   const n = un(e);
   return dn(() => {
     n.current = e;
@@ -227,7 +227,7 @@ function Qe(e) {
 const fn = window.React.useEffect;
 let De = [];
 function Dt(e) {
-  const n = Qe(e);
+  const n = je(e);
   fn(() => (De.push(n), () => {
     De = De.filter((t) => t !== n);
   }), []);
@@ -411,8 +411,8 @@ const W = {
       }
     }
   ));
-}, Ae = "roam-stack-last-edited-block", Ge = `.${Ae}`;
-function Je(e, n, t = Ge) {
+}, Ae = "roam-stack-last-edited-block", Qe = `.${Ae}`;
+function Ge(e, n, t = Qe) {
   if (!e)
     return;
   const o = (i) => {
@@ -430,18 +430,18 @@ let Ie = () => {
 function ut() {
   Ie();
   let e = "", n = "";
-  const t = document.querySelector("#right-sidebar"), o = Je(
+  const t = document.querySelector("#right-sidebar"), o = Ge(
     t,
     (a) => {
       e = a.id;
     },
-    Ge
-  ), i = document.querySelector(".roam-main"), r = Je(
+    Qe
+  ), i = document.querySelector(".roam-main"), r = Ge(
     i,
     (a) => {
       a.closest(".roam-body-main") && (n = a.id);
     },
-    `.roam-body-main ${Ge}`
+    `.roam-body-main ${Qe}`
   ), s = (a) => {
     var d;
     [e, n].find(
@@ -458,7 +458,7 @@ ne.on_uninstall(() => {
 function pn() {
   Ie();
 }
-const L = window.React, gn = window.React.useContext, _e = window.React.useEffect, Fe = window.React.useRef, be = window.Blueprint.Core.Button, ft = window.Blueprint.Core.Icon, bn = window.Blueprint.Core.ContextMenu, ze = window.Blueprint.Core.Popover, mt = window.Blueprint.Core.PopoverInteractionKind, Ye = window.Blueprint.Core.Position, wn = ({ item: e, index: n, total: t }) => {
+const L = window.React, gn = window.React.useContext, He = window.React.useEffect, _e = window.React.useRef, be = window.Blueprint.Core.Button, ft = window.Blueprint.Core.Icon, bn = window.Blueprint.Core.ContextMenu, Fe = window.Blueprint.Core.Popover, mt = window.Blueprint.Core.PopoverInteractionKind, ze = window.Blueprint.Core.Position, wn = ({ item: e, index: n, total: t }) => {
   const o = gn(Be);
   if (!o)
     throw new Error("PageCard must be used within StackProvider");
@@ -469,8 +469,8 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
     pageWidth: a,
     isCollapsed: c,
     toggleCollapsed: d
-  } = o, u = n < t - 1, p = s === n, m = Fe(null), f = c(e.id);
-  _e(() => {
+  } = o, u = n < t - 1, p = s === n, m = _e(null), f = c(e.id);
+  He(() => {
     setTimeout(async () => {
       if (await window.roamAlphaAPI.ui.components.unmountNode({
         el: m.current
@@ -493,19 +493,19 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
   const b = (l) => o.stack.slice(0, l).reduce((w, O) => {
     const P = c(O.id) ? W.SPINE_WIDTH : a;
     return w + (P - W.SPINE_WIDTH);
-  }, 0), I = b(n), M = f ? W.SPINE_WIDTH : a, v = I + (M - W.TITLE_SHOW_AT), T = b(Math.max(n - 1, 0)), y = Fe(null), h = Fe("");
-  return _e(() => {
-    h.current && !f && et() && setTimeout(() => {
+  }, 0), I = b(n), M = f ? W.SPINE_WIDTH : a, v = I + (M - W.TITLE_SHOW_AT), T = b(Math.max(n - 1, 0)), y = _e(null), h = _e("");
+  return He(() => {
+    h.current && !f && Ze() && setTimeout(() => {
       var O;
       let w = y.current.querySelector(`[id$="${h.current}"]`);
       w || (w = y.current.querySelector(
         `[id$="${h.current.substr(-9)}"]`
       )), (O = w.closest(".rm-block-main")) == null || O.classList.add("roam-stack-last-edited-block");
     }, 200);
-  }, [f]), _e(() => {
+  }, [f]), He(() => {
     if (y.current)
-      return Je(y.current, (l) => {
-        if (h.current = l.id, !et()) {
+      return Ge(y.current, (l) => {
+        if (h.current = l.id, !Ze()) {
           h.current = "";
           return;
         }
@@ -623,11 +623,11 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
           e.title
         ),
         f && /* @__PURE__ */ L.createElement(
-          ze,
+          Fe,
           {
             content: /* @__PURE__ */ L.createElement("div", { className: "roam-stack-popover-content" }, "Unfold tab"),
             interactionKind: mt.HOVER,
-            position: Ye.RIGHT,
+            position: ze.RIGHT,
             target: /* @__PURE__ */ L.createElement(
               be,
               {
@@ -660,11 +660,11 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
             } : null
           },
           /* @__PURE__ */ L.createElement(
-            ze,
+            Fe,
             {
               content: /* @__PURE__ */ L.createElement("div", { className: "roam-stack-popover-content" }, "Fold tab"),
               interactionKind: mt.HOVER,
-              position: Ye.BOTTOM,
+              position: ze.BOTTOM,
               target: /* @__PURE__ */ L.createElement(
                 be,
                 {
@@ -677,7 +677,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
             }
           ),
           /* @__PURE__ */ L.createElement(
-            ze,
+            Fe,
             {
               autoFocus: !1,
               content: /* @__PURE__ */ L.createElement(
@@ -690,7 +690,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
                   isCollapsed: f
                 }
               ),
-              position: Ye.BOTTOM_RIGHT,
+              position: ze.BOTTOM_RIGHT,
               target: /* @__PURE__ */ L.createElement(be, { minimal: !0, icon: "more", small: !0 })
             }
           )
@@ -708,7 +708,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
                 P && r(P);
                 return;
               }
-              We(e.id);
+              st(e.id);
             },
             className: "roam-stack-card-body",
             ref: m
@@ -717,11 +717,11 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
       )
     )
   );
-}, se = window.React, vn = window.React.useContext, kn = window.React.useEffect, ae = window.React.useRef, ht = window.React.useState, Sn = window.Blueprint.Core.Tooltip, Tn = window.Blueprint.Core.Position, In = () => {
+}, ae = window.React, vn = window.React.useContext, kn = window.React.useEffect, re = window.React.useRef, ht = window.React.useState, Sn = window.Blueprint.Core.Tooltip, Tn = window.Blueprint.Core.Position, In = () => {
   const e = vn(Be);
   if (!e)
     throw new Error("Minimap must be used within StackProvider");
-  const { stack: n, containerRef: t, pageWidth: o, collapsedNonce: i, focusedIndex: r } = e, s = ae(null), a = ae(null), c = ae(!1), [d, u] = ht(!1), p = ae(0), m = ae(0), [f, b] = ht(""), I = ae(-1), M = Sn, v = () => {
+  const { stack: n, containerRef: t, pageWidth: o, collapsedNonce: i, focusedIndex: r } = e, s = re(null), a = re(null), c = re(!1), [d, u] = ht(!1), p = re(0), m = re(0), [f, b] = ht(""), I = re(-1), M = Sn, v = () => {
     const l = t.current;
     if (!l || !s.current || !a.current || n.length === 0)
       return null;
@@ -774,16 +774,16 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
       t.current.style.scrollBehavior = "auto";
       const X = U / k.scaleRatio;
       t.current.scrollLeft = X, t.current.style.scrollBehavior = ee || "smooth";
-      const he = X + k.viewportWidth / 2, ie = Math.floor(he / o);
-      if (ie !== I.current) {
-        I.current = ie;
-        const pe = n[ie];
+      const he = X + k.viewportWidth / 2, se = Math.floor(he / o);
+      if (se !== I.current) {
+        I.current = se;
+        const pe = n[se];
         pe && b(pe.title);
       }
-    }, oe = () => {
-      c.current = !1, u(!1), document.removeEventListener("mousemove", H), document.removeEventListener("mouseup", oe);
+    }, ie = () => {
+      c.current = !1, u(!1), document.removeEventListener("mousemove", H), document.removeEventListener("mouseup", ie);
     };
-    document.addEventListener("mousemove", H), document.addEventListener("mouseup", oe);
+    document.addEventListener("mousemove", H), document.addEventListener("mouseup", ie);
   }, h = (l) => {
     if (l.target === a.current)
       return;
@@ -803,7 +803,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
       return l.addEventListener("scroll", T), window.addEventListener("resize", v), setTimeout(v, 0), () => {
         l.removeEventListener("scroll", T), window.removeEventListener("resize", v);
       };
-  }, [n.length, i]), n.length === 0 ? null : /* @__PURE__ */ se.createElement(
+  }, [n.length, i]), n.length === 0 ? null : /* @__PURE__ */ ae.createElement(
     "div",
     {
       ref: s,
@@ -811,7 +811,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
       className: "roam-stack-minimap",
       onMouseDown: h
     },
-    /* @__PURE__ */ se.createElement("div", { style: { width: "100%", height: "100%" } }, /* @__PURE__ */ se.createElement("div", { className: "roam-stack-minimap-preview" }, n.map((l, w) => /* @__PURE__ */ se.createElement(
+    /* @__PURE__ */ ae.createElement("div", { style: { width: "100%", height: "100%" } }, /* @__PURE__ */ ae.createElement("div", { className: "roam-stack-minimap-preview" }, n.map((l, w) => /* @__PURE__ */ ae.createElement(
       M,
       {
         key: l.id,
@@ -821,13 +821,13 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
         transitionDuration: 100,
         disabled: d
       },
-      /* @__PURE__ */ se.createElement(
+      /* @__PURE__ */ ae.createElement(
         "div",
         {
           className: `minimap-block ${w === r ? "minimap-block-focused" : ""}`
         }
       )
-    ))), /* @__PURE__ */ se.createElement(
+    ))), /* @__PURE__ */ ae.createElement(
       "div",
       {
         ref: a,
@@ -836,18 +836,18 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
       }
     ))
   );
-}, re = window.React, yn = window.React.useContext, Cn = () => {
+}, ce = window.React, yn = window.React.useContext, Cn = () => {
   const e = yn(Be);
   if (!e)
     throw new Error("Layout must be used within StackProvider");
   const { stack: n, containerRef: t, handleScroll: o, hintRef: i } = e;
-  return /* @__PURE__ */ re.createElement(
+  return /* @__PURE__ */ ce.createElement(
     "div",
     {
       className: "roam-stack-layout"
     },
-    /* @__PURE__ */ re.createElement(In, null),
-    /* @__PURE__ */ re.createElement(
+    /* @__PURE__ */ ce.createElement(In, null),
+    /* @__PURE__ */ ce.createElement(
       "div",
       {
         ref: t,
@@ -858,12 +858,12 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
           "--scroll-max": "0"
         }
       },
-      n.length === 0 && /* @__PURE__ */ re.createElement(
+      n.length === 0 && /* @__PURE__ */ ce.createElement(
         "div",
         {
           className: "roam-stack-empty-state"
         },
-        /* @__PURE__ */ re.createElement(
+        /* @__PURE__ */ ce.createElement(
           "div",
           {
             className: "roam-stack-empty-text"
@@ -871,7 +871,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
           "No tabs"
         )
       ),
-      n.map((r, s) => /* @__PURE__ */ re.createElement(
+      n.map((r, s) => /* @__PURE__ */ ce.createElement(
         wn,
         {
           key: r.id,
@@ -882,7 +882,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
       ))
     )
   );
-}, Ze = window.React, Ke = window.React.useRef, En = window.React.createContext, pt = window.React.useState, ke = window.React.useEffect, Be = En(
+}, Je = window.React, Ye = window.React.useRef, En = window.React.createContext, pt = window.React.useState, ke = window.React.useEffect, Be = En(
   void 0
 ), Rn = ({
   children: e,
@@ -895,13 +895,13 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
   onOpenInSidebar: a,
   initialCollapsedUids: c
 }) => {
-  const d = Ke(null), u = Ke(null), p = n, m = p.findIndex((g) => g.id === t), f = m, [b, I] = pt(
+  const d = Ye(null), u = Ye(null), p = n, m = p.findIndex((g) => g.id === t), f = m, [b, I] = pt(
     new Set(c || [])
   ), [M, v] = pt(0), T = (g) => b.has(g), y = () => {
     const g = new Set(p.map((k) => k.id));
-    I(g), je(Array.from(g)), v((k) => k + 1);
+    I(g), Ve(Array.from(g)), v((k) => k + 1);
   }, h = () => {
-    I(/* @__PURE__ */ new Set()), je([]), v((g) => g + 1);
+    I(/* @__PURE__ */ new Set()), Ve([]), v((g) => g + 1);
   }, l = (g) => {
     const k = d.current;
     if (!k)
@@ -909,9 +909,9 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
     const E = k.children[g];
     if (E) {
       const ee = k.getBoundingClientRect(), X = E.getBoundingClientRect(), he = X.left >= ee.left - 5 && X.right <= ee.right + 5;
-      let ie = !1;
+      let se = !1;
       const pe = k.children[g + 1];
-      if (pe && pe.getBoundingClientRect().left < X.right - 10 && (ie = !0), he && !ie)
+      if (pe && pe.getBoundingClientRect().left < X.right - 10 && (se = !0), he && !se)
         return;
     }
     const U = p.slice(0, g).reduce((ee, X) => {
@@ -933,7 +933,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
     const k = b.has(g);
     if (I((E) => {
       const U = new Set(E);
-      return U.has(g) ? U.delete(g) : U.add(g), je(Array.from(U)), U;
+      return U.has(g) ? U.delete(g) : U.add(g), Ve(Array.from(U)), U;
     }), v((E) => E + 1), k) {
       const E = p.findIndex((U) => U.id === g);
       E > -1 && (l(E), setTimeout(() => {
@@ -961,9 +961,9 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
       const k = g.currentTarget, E = k.scrollLeft, U = k.scrollWidth - k.clientWidth;
       k.style.setProperty("--scroll-x", `${E}`), P(U, E);
     }
-  }, oe = Ke(() => {
+  }, ie = Ye(() => {
   });
-  return oe.current = () => {
+  return ie.current = () => {
     $(), m > -1 && l(m);
   }, ke(() => {
     const g = d.current;
@@ -971,7 +971,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
       return;
     $();
     const k = new ResizeObserver(() => {
-      oe.current();
+      ie.current();
     });
     return k.observe(g), () => k.disconnect();
   }, []), ke(() => {
@@ -980,7 +980,7 @@ const L = window.React, gn = window.React.useContext, _e = window.React.useEffec
     setTimeout($, 0);
   }, [b]), ke(() => {
     l(m);
-  }, [m]), /* @__PURE__ */ Ze.createElement(
+  }, [m]), /* @__PURE__ */ Je.createElement(
     Be.Provider,
     {
       value: {
@@ -1055,7 +1055,7 @@ const On = (e) => {
     if (a != null && a.fromSearchSelection) {
       const h = ct(e.tabs, b);
       if (h) {
-        await c(e.tabs, h), await fe(h);
+        await c(e.tabs, h), await oe(h);
         return;
       }
     }
@@ -1065,7 +1065,7 @@ const On = (e) => {
         const l = e.tabs.map(
           (w) => w.tabId === e.currentTab.tabId ? h : w
         );
-        await c(l, h), await fe(h);
+        await c(l, h), await oe(h);
         return;
       }
     }
@@ -1133,7 +1133,7 @@ const On = (e) => {
       }
     });
   };
-  return /* @__PURE__ */ Ze.createElement(
+  return /* @__PURE__ */ Je.createElement(
     Rn,
     {
       tabs: e.tabs.map((s) => ({
@@ -1151,7 +1151,7 @@ const On = (e) => {
       onOpenInSidebar: i,
       initialCollapsedUids: e.collapsedUids
     },
-    /* @__PURE__ */ Ze.createElement(Cn, null)
+    /* @__PURE__ */ Je.createElement(Cn, null)
   );
 }, Le = window.React, xn = window.ReactDOM, Pn = "roam-main", $e = "roam-stack-container";
 ne.on_uninstall(() => {
@@ -1187,7 +1187,7 @@ const Dn = () => {
 function Un(e) {
   return /* @__PURE__ */ Le.createElement(Le.Fragment, null, e.children);
 }
-const D = window.React, Mn = window.React.Component, Bn = window.React.useReducer, Nn = window.ReactDOM, { useEffect: bt } = D, Xe = window.Blueprint.Core.Button, wt = window.Blueprint.Core.Icon, ce = window.Blueprint.Core.MenuItem, Wn = window.Blueprint.Core.Menu, qn = window.Blueprint.Core.ContextMenu, Ve = window.Blueprint.Core.MenuDivider, vt = "roam-tabs";
+const D = window.React, Mn = window.React.Component, Bn = window.React.useReducer, Nn = window.ReactDOM, { useEffect: bt } = D, Ke = window.Blueprint.Core.Button, wt = window.Blueprint.Core.Icon, le = window.Blueprint.Core.MenuItem, Wn = window.Blueprint.Core.Menu, qn = window.Blueprint.Core.ContextMenu, Xe = window.Blueprint.Core.MenuDivider, vt = "roam-tabs";
 function Hn(e, n = 500) {
   let t = setTimeout(() => {
   }, 0);
@@ -1213,7 +1213,7 @@ const Lt = (e) => {
 function kt(e) {
   const { tabs: n, currentTab: t } = e;
   At = Bn((r) => r + 1, 0)[1];
-  const o = Qe(async (r, s, a, c) => {
+  const o = je(async (r, s, a, c) => {
     if (r) {
       const d = x(), u = (d == null ? void 0 : d.tabs) || [], p = (d == null ? void 0 : d.activeTab) || t, f = !!(c != null && c.fromSearchSelection) && !Me() && !(p != null && p.pin) ? !!c.forceOpenInNewTab : !!(St || c != null && c.forceOpenInNewTab || p != null && p.pin || Me()), b = {
         uid: r,
@@ -1231,7 +1231,7 @@ function kt(e) {
           v
         );
         if (l) {
-          A(u, l), fe(l);
+          A(u, l), oe(l);
           return;
         }
       }
@@ -1261,7 +1261,7 @@ function kt(e) {
       A(y, h);
     } else
       A(n, void 0);
-  }), i = Qe(function(s) {
+  }), i = je(function(s) {
     St = s.ctrlKey || s.metaKey;
   });
   return bt(() => {
@@ -1281,7 +1281,7 @@ function kt(e) {
         const m = (((d = x()) == null ? void 0 : d.tabs) || n).map(
           (f) => f.tabId === t.tabId ? u : f
         );
-        A(m, u), fe(u);
+        A(m, u), oe(u);
         return;
       }
     }
@@ -1320,7 +1320,7 @@ class Fn extends Mn {
   render() {
     const { active: n, tab: t, index: o, tabs: i, currentTab: r } = this.props;
     return /* @__PURE__ */ D.createElement(
-      Xe,
+      Ke,
       {
         style: {
           outline: "none"
@@ -1346,7 +1346,7 @@ class Fn extends Mn {
         onContextMenu: (s) => {
           s.preventDefault(), s.stopPropagation(), qn.show(
             /* @__PURE__ */ D.createElement(Wn, null, /* @__PURE__ */ D.createElement(
-              ce,
+              le,
               {
                 text: "Close",
                 tagName: "span",
@@ -1355,7 +1355,7 @@ class Fn extends Mn {
                 }
               }
             ), /* @__PURE__ */ D.createElement(
-              ce,
+              le,
               {
                 text: "Close Others",
                 onClick: () => {
@@ -1364,7 +1364,7 @@ class Fn extends Mn {
                 disabled: i.length === 1
               }
             ), /* @__PURE__ */ D.createElement(
-              ce,
+              le,
               {
                 onClick: () => {
                   Kt(o);
@@ -1372,27 +1372,27 @@ class Fn extends Mn {
                 text: "Close to the Right",
                 disabled: o + 1 >= i.length
               }
-            ), /* @__PURE__ */ D.createElement(Ve, null), /* @__PURE__ */ D.createElement(
-              ce,
+            ), /* @__PURE__ */ D.createElement(Xe, null), /* @__PURE__ */ D.createElement(
+              le,
               {
                 onClick: () => {
                   Pt(`[[${t.title}]]`);
                 },
                 text: "Copy Page Reference"
               }
-            ), /* @__PURE__ */ D.createElement(Ve, null), /* @__PURE__ */ D.createElement(
-              ce,
+            ), /* @__PURE__ */ D.createElement(Xe, null), /* @__PURE__ */ D.createElement(
+              le,
               {
                 onClick: () => {
                   Tt(t.uid);
                 },
                 text: "Open in Sidebar"
               }
-            ), /* @__PURE__ */ D.createElement(Ve, null), /* @__PURE__ */ D.createElement(
-              ce,
+            ), /* @__PURE__ */ D.createElement(Xe, null), /* @__PURE__ */ D.createElement(
+              le,
               {
                 onClick: () => {
-                  tt(t.tabId);
+                  et(t.tabId);
                 },
                 text: t.pin ? "Unpin" : "Pin"
               }
@@ -1407,21 +1407,21 @@ class Fn extends Mn {
             Tt(t.uid);
             return;
           }
-          We(t.tabId);
+          A(i, t), oe(t);
         },
         rightIcon: t.pin ? /* @__PURE__ */ D.createElement(
-          Xe,
+          Ke,
           {
             minimal: !0,
             small: !0,
             intent: "danger",
             icon: /* @__PURE__ */ D.createElement(wt, { icon: "pin" }),
             onClickCapture: (s) => {
-              s.preventDefault(), s.stopPropagation(), tt(t.tabId);
+              s.preventDefault(), s.stopPropagation(), et(t.tabId);
             }
           }
         ) : /* @__PURE__ */ D.createElement(
-          Xe,
+          Ke,
           {
             minimal: !0,
             small: !0,
@@ -1584,12 +1584,12 @@ function It(e, n) {
   }
   return !1;
 }
-const le = window.React, Jn = window.ReactDOM, V = 200, j = 10, Q = 10;
-class $t extends le.Component {
+const de = window.React, Jn = window.ReactDOM, V = 200, j = 10, Q = 10;
+class $t extends de.Component {
   constructor(t) {
     super(t);
-    S(this, "listRef", le.createRef());
-    S(this, "ghostRef", le.createRef());
+    S(this, "listRef", de.createRef());
+    S(this, "ghostRef", de.createRef());
     S(this, "topOffsets", []);
     S(this, "itemTranslateOffsets", []);
     S(this, "initialYOffset", 0);
@@ -1815,8 +1815,8 @@ class $t extends le.Component {
       position: "fixed",
       marginTop: 0
     };
-    return le.createElement(
-      le.Fragment,
+    return de.createElement(
+      de.Fragment,
       null,
       this.props.renderList({
         children: this.props.values.map((i, r) => {
@@ -1860,7 +1860,7 @@ class $t extends le.Component {
         isDisabled: !1,
         isOutOfBounds: this.state.itemDraggedOutOfBounds > -1
       }), this.props.container || document.body),
-      le.createElement("div", { "aria-live": "assertive", role: "log", "aria-atomic": "true", style: {
+      de.createElement("div", { "aria-live": "assertive", role: "log", "aria-atomic": "true", style: {
         position: "absolute",
         width: "1px",
         height: "1px",
@@ -1931,7 +1931,7 @@ function ao(e, n) {
           A(t, n);
         },
         onTabSelect: (t) => {
-          We(t.tabId);
+          st(t.tabId);
         }
       }
     )
@@ -2259,7 +2259,7 @@ function lo(e) {
     callback: () => {
       var o;
       const t = (o = x()) == null ? void 0 : o.activeTab;
-      t && tt(t.tabId);
+      t && et(t.tabId);
     }
   });
   const n = (t) => {
@@ -2270,9 +2270,9 @@ function lo(e) {
   };
   document.addEventListener("keydown", n, !0), ne.on_uninstall(() => {
     document.removeEventListener("keydown", n, !0);
-  }), et() && ut(), J();
+  }), Ze() && ut(), J();
 }
-function et() {
+function Ze() {
   return C.settings.get(R.StackRememberLastEditedBlock) === !0;
 }
 function uo() {
@@ -2356,19 +2356,19 @@ function po(e, n) {
   if (t)
     return e.find((o) => o.tabId === t.tabId) || e.find((o) => Bt(o, t)) || t;
 }
-function ue() {
+function fe() {
   const e = Ne();
   return Ee() ? `${R.Tabs}-${e}` : `${R.ClientConfig}-${e}`;
 }
 function Me() {
   return C.settings.get(R.Auto) === !0;
 }
-function st() {
+function it() {
   return !!C.settings.get(R.ClientCanSaveConfig);
 }
 function x() {
   if (Ee()) {
-    const n = C.settings.get(ue());
+    const n = C.settings.get(fe());
     return Te(n || (C.settings.get(R.Tabs) ?? {
       tabs: []
     }));
@@ -2379,9 +2379,9 @@ function x() {
         tabs: []
       }
     );
-  if (st())
+  if (it())
     try {
-      const n = localStorage.getItem(ue());
+      const n = localStorage.getItem(fe());
       if (n)
         return Te(JSON.parse(n));
     } catch (n) {
@@ -2433,7 +2433,7 @@ function bo(e) {
   const n = x(), t = [...(n == null ? void 0 : n.tabs) || []], o = t.findIndex((i) => i.tabId === e);
   o > -1 && (t[o].blockUid = t[o].uid, A(t, t[o]));
 }
-function We(e) {
+function st(e) {
   const n = x(), t = (n == null ? void 0 : n.tabs) || [], o = t.findIndex((i) => i.tabId === e);
   o > -1 && (A(t, t[o]), window.roamAlphaAPI.ui.mainWindow.openBlock({
     block: {
@@ -2592,9 +2592,9 @@ async function zt(e) {
       const f = o.map(
         (b) => b.tabId === t.tabId ? a : b
       );
-      return A(f, u), await fe(u), !0;
+      return A(f, u), await oe(u), !0;
     }
-    return We(u.tabId), !0;
+    return st(u.tabId), !0;
   }
   const p = e === "back" ? {
     ...a,
@@ -2611,7 +2611,7 @@ async function zt(e) {
   }, m = o.map(
     (f) => f.tabId === t.tabId ? p : f
   );
-  return A(m, p), await fe(p), !0;
+  return A(m, p), await oe(p), !0;
 }
 function To() {
   return zt("back");
@@ -2631,7 +2631,7 @@ function xt(e) {
 ]
 `) || e;
 }
-async function fe(e) {
+async function oe(e) {
   if (!e)
     return;
   const n = e.blockUid && Ce(e.blockUid) && e.blockUid || Ce(e.uid) && e.uid || void 0;
@@ -2672,7 +2672,7 @@ function Kt(e) {
   ), r = i === -1 || i > e ? o[e] : n == null ? void 0 : n.activeTab;
   A(o, r);
 }
-function tt(e) {
+function et(e) {
   var s;
   const n = x(), o = ((n == null ? void 0 : n.tabs) || []).map(
     (a) => a.tabId === e ? { ...a, pin: !a.pin } : a
@@ -2691,12 +2691,12 @@ function yo(e, n) {
     collapsedUids: (o == null ? void 0 : o.collapsedUids) || []
   };
   if (Ee()) {
-    C.settings.set(ue(), s);
+    C.settings.set(fe(), s);
     return;
   }
-  if (st())
+  if (it())
     try {
-      localStorage.setItem(ue(), JSON.stringify(s));
+      localStorage.setItem(fe(), JSON.stringify(s));
     } catch (a) {
       console.error("Failed to save tabs to localStorage:", a);
     }
@@ -2704,7 +2704,7 @@ function yo(e, n) {
 function Xt() {
   return C.settings.get(R.TabMode) === "stack";
 }
-function je(e) {
+function Ve(e) {
   if (!Ne())
     return;
   const t = x() || { tabs: [] }, o = {
@@ -2713,12 +2713,12 @@ function je(e) {
     collapsedUids: e
   };
   if (Ee()) {
-    C.settings.set(ue(), o), J();
+    C.settings.set(fe(), o), J();
     return;
   }
-  if (st())
+  if (it())
     try {
-      localStorage.setItem(ue(), JSON.stringify(o)), J();
+      localStorage.setItem(fe(), JSON.stringify(o)), J();
     } catch (i) {
       console.error("Failed to save collapsedUids to localStorage:", i);
     }
